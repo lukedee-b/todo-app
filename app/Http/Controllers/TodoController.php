@@ -9,6 +9,14 @@ use Illuminate\Http\RedirectResponse;
 
 class TodoController extends Controller
 {
+   /*  'user_id', '=', Auth::id()  this is very important*/
+    public function getMyTodos(){
+        $todos = Todo::where('user_id', '=', Auth::id())->get();
+
+        return view('todos.index', [
+            'todos' => $todos
+        ]);
+    }
     /**
      * Display a listing of the resource.
      */
