@@ -11,7 +11,8 @@ class TodoController extends Controller
 {
    /*  'user_id', '=', Auth::id()  this is very important*/
     public function getMyTodos(){
-        $todos = Todo::where('user_id', '=', Auth::id())->get();
+        //$todos = Todo::where('user_id', '=', Auth::id())->get();
+        $todos = Auth::user()->todos;
 
         return view('todos.index', [
             'todos' => $todos
@@ -47,13 +48,13 @@ class TodoController extends Controller
 
         //validation rules
         $rules =[
-            'title'=> 'required|string|unique:todos,title|min:2|max:150',
+            'title'=> 'required|string|min:2|max:150',
             'body'=> 'required|string|min:5|max:1000',
 
         ];
 
         $messages=[
-            'title.unique'=>'Todo title should be unique'
+            'title.required'=>'Todo title should be required'
         ];
 
         $request->validate($rules, $messages);
@@ -98,13 +99,13 @@ class TodoController extends Controller
     
             //validation rules
             $rules =[
-                'title'=> "required|string|unique:todos,title,{$id}|min:2|max:150",
+                'title'=> "required|string|{$id}|min:2|max:150",
                 'body'=> 'required|string|min:5|max:1000',
     
             ];
     
             $messages=[
-                'title.unique'=>'Todo title should be unique'
+                'title.required'=>'Todo title should be required'
             ];
     
             $request->validate($rules, $messages);
